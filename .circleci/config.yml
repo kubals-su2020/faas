@@ -11,7 +11,7 @@ jobs:
           command: sudo apt-get -y install awscli
       - run:
           name: Build deployment artifact
-          command: zip -r ~/exports.js.zip export.js
+          command: zip -r ~/exports.js.zip exports.js
       - run:
           name: Copy artifact to S3
           command: aws s3 cp ~/exports.js.zip s3://codedeploy.shalvikubal.me
