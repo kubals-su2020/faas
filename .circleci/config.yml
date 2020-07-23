@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/faas
+    docker:
+      - image: circleci/node:13.11.0
+    steps:
+      - checkout
+      - run:
+          name: Install aws_cli
+          command: sudo apt-get -y install awscli
+      - run:
+          name: Build deployment artifact
+          command: zip -r ~/exports.js.zip export.js
+      - run:
+          name: Copy artifact to S3
+          command: aws s3 cp ~/exports.js.zip s3://codedeploy.shalvikubal.me
+      - run:
+          name: Deploy lambda function
+          command: aws lambda update-function-code --function-name lambda_called_from_sns --s3-bucket codedeploy.shalvikubal.me --s3-key exports.js.zip
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      # - build:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
