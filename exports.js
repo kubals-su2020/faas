@@ -5,7 +5,7 @@ var sourceEmailId = process.env.SOURCE;
 var ddb = new aws.DynamoDB({params: {TableName: 'csye6225'}});
 
 exports.handler = function(event, context) {
-
+  console.log("Hit exports handler for lambda!")
     console.log("EVENT: \n" + JSON.stringify(event, null, 2))
     const snsMsg = event.Records[0].Sns.Message;
     var userEmail = snsMsg.split(':')[0];
